@@ -26,15 +26,19 @@ const fail = (response) => {
 }
 
 // Main
-const main = () => {
-  const balance_query = query_builder({ 
-    address: ETHEREUM_ADDRESSES, 
-    apikey: ETHERSCAN_API_KEY 
-  })
+const main = async () => {
+  try {
+    const balance_query = query_builder({ 
+      address: ETHEREUM_ADDRESSES, 
+      apikey: ETHERSCAN_API_KEY 
+    })
 
-  get(balance_query)
-    .then(handle)
-    .catch(err => console.log({ err }))
+    const res = await get(balance_query)
+    handle(res)
+  }
+  catch (err) {
+    console.log({ err })
+  }
 }
 
 main()
