@@ -13,7 +13,7 @@ const render = (result=[]) => {
 // handle what happens to data
 const handle = (data) => {
   if (data.status === '1') {
-    return render(data.result)
+    render(data.result)
   }
   else {
     console.log('🔥', { data, query_string: balance_query })
