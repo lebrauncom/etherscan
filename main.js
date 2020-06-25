@@ -1,8 +1,7 @@
 require('dotenv').config()
 const axios = require('axios')
-const numbro =require('numbro')
 const { ETHERSCAN_API_KEY, ETHEREUM_ADDRESSES } = require('./secrets')
-const { object_keys_values_to_string } = require('./utils')
+const { object_keys_values_to_string, to_pretty_balance } = require('./utils')
 
 const ETHERSCAN_API_BASE_URL = 'https://api.etherscan.io'
 
@@ -36,13 +35,6 @@ const balance_query = query_builder({
 
 const get = (query) => {
   return client.get(`/api?${query}`)
-}
-
-// format ethereum balance from integer to decimal
-const to_pretty_balance = (val) => {
-  return numbro(val)
-    .divide(1000000000000000000)
-    .format({ thousandSeparated: true, mantissa: 18 })
 }
 
 // render data to console
