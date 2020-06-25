@@ -12,17 +12,40 @@ const client = axios.create({
   timeout: 5000,
 })
 
-const balance_query = `
-  module=account&
-  action=balancemulti&
-  address=${ETHEREUM_ADDRESSES}&
-  tag=latest&
-  apikey=${ETHERSCAN_API_KEY}
-`
+const object_keys_values_to_string = (obj, opts={}) => {
+  if (Object.entries(opts).length === 0) {
+    opts = { join: ',', sep: ':' }
+  }
+  
+  return Object.keys(obj)
+    .map(key => `${key}${opts.sep}${obj[key]}`)
+    .join(opts.join)
+}
 
-const get = async (dirty_query) => {
-  const query = dirty_query.replace(/(\r\n|\n|\r| )/gm, '')
-  return await client.get(`/api?${query}`)
+const query_builder = (dirty_query={}) => {
+  const base_query = {
+    module: 'account',
+    action: 'balancemulti',
+    address: '',
+    tag: 'latest',
+    apikey: ''
+  }
+  
+  const query = {
+    ...base_query,
+    ...dirty_query
+  }
+
+  return object_keys_values_to_string(query, { join: '&', sep: '=' })
+}
+
+const balance_query = query_builder({ 
+  address: ETHEREUM_ADDRESSES, 
+  apikey: ETHERSCAN_API_KEY 
+})
+
+const get = (query) => {
+  return client.get(`/api?${query}`)
 }
 
 // format ethereum balance from integer to decimal
@@ -45,7 +68,7 @@ const handle = (data) => {
     return render(data.result)
   }
   else {
-    console.log('Unable to handle data', { data })
+    console.log('🔥', { data, query_string: balance_query })
   }
 }
 
