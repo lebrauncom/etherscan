@@ -1,5 +1,5 @@
 require('dotenv').config()
-const { get, query_builder } = require('./api')
+const { get, is_ok, query_builder } = require('./api')
 const { ETHERSCAN_API_KEY, ETHEREUM_ADDRESSES } = require('./secrets')
 const { to_pretty_balance } = require('./utils')
 
@@ -10,14 +10,19 @@ const render = (result=[]) => {
   })
 }
 
-// handle what happens to data
-const handle = (data) => {
-  if (data.status === '1') {
-    render(data.result)
-  }
-  else {
-    console.log('🔥', { data, query_string: balance_query })
-  }
+// handle response
+const handle = (response) => {
+  is_ok(response) ? success(response.data) : fail(response)
+}
+
+// handle success
+const success = (data) => {
+  render(data.result)
+}
+
+// handle fail
+const fail = (response) => {
+  console.log('🔥', { response })
 }
 
 // Main
@@ -28,12 +33,8 @@ const main = () => {
   })
 
   get(balance_query)
-    .then(response => {
-      handle(response.data)
-    })
-    .catch(err => {
-      console.log({ err })
-    })
+    .then(handle)
+    .catch(err => console.log({ err }))
 }
 
 main()

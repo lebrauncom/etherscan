@@ -30,7 +30,12 @@ const get = (query) => {
   return client.get(`/api?${query}`)
 }
 
+const is_ok = (response) => {
+  return response.data.status === '1'
+}
+
 module.exports = {
   get,
+  is_ok,
   query_builder
 }
