@@ -1,41 +1,7 @@
 require('dotenv').config()
-const axios = require('axios')
+const { get, query_builder } = require('./api')
 const { ETHERSCAN_API_KEY, ETHEREUM_ADDRESSES } = require('./secrets')
-const { object_keys_values_to_string, to_pretty_balance } = require('./utils')
-
-const ETHERSCAN_API_BASE_URL = 'https://api.etherscan.io'
-
-// api integration
-const client = axios.create({
-  baseURL: ETHERSCAN_API_BASE_URL,
-  timeout: 5000,
-})
-
-const query_builder = (dirty_query={}) => {
-  const base_query = {
-    module: 'account',
-    action: 'balancemulti',
-    address: '',
-    tag: 'latest',
-    apikey: ''
-  }
-  
-  const query = {
-    ...base_query,
-    ...dirty_query
-  }
-
-  return object_keys_values_to_string(query, { join: '&', sep: '=' })
-}
-
-const balance_query = query_builder({ 
-  address: ETHEREUM_ADDRESSES, 
-  apikey: ETHERSCAN_API_KEY 
-})
-
-const get = (query) => {
-  return client.get(`/api?${query}`)
-}
+const { to_pretty_balance } = require('./utils')
 
 // render data to console
 const render = (result=[]) => {
@@ -55,8 +21,13 @@ const handle = (data) => {
 }
 
 // Main
-const main = async () => {
-  await get(balance_query)
+const main = () => {
+  const balance_query = query_builder({ 
+    address: ETHEREUM_ADDRESSES, 
+    apikey: ETHERSCAN_API_KEY 
+  })
+
+  get(balance_query)
     .then(response => {
       handle(response.data)
     })
