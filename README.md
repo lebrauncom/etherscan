@@ -1,4 +1,4 @@
-# Fetch balances from Etherscan.io api
+# Fetch Ethereum wallet balances from Etherscan.io API
 
 ## Project setup
 ```
