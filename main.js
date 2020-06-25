@@ -1,10 +1,9 @@
 require('dotenv').config()
 const axios = require('axios')
 const numbro =require('numbro')
+const { ETHERSCAN_API_KEY, ETHEREUM_ADDRESSES } = require('./secrets')
 
 const ETHERSCAN_API_BASE_URL = 'https://api.etherscan.io'
-const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY
-const ETHEREUM_ADDRESSES = process.env.ETHEREUM_ADDRESSES
 
 // api integration
 const client = axios.create({
