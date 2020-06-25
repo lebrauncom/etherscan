@@ -2,6 +2,7 @@ require('dotenv').config()
 const axios = require('axios')
 const numbro =require('numbro')
 const { ETHERSCAN_API_KEY, ETHEREUM_ADDRESSES } = require('./secrets')
+const { object_keys_values_to_string } = require('./utils')
 
 const ETHERSCAN_API_BASE_URL = 'https://api.etherscan.io'
 
@@ -10,16 +11,6 @@ const client = axios.create({
   baseURL: ETHERSCAN_API_BASE_URL,
   timeout: 5000,
 })
-
-const object_keys_values_to_string = (obj, opts={}) => {
-  if (Object.entries(opts).length === 0) {
-    opts = { join: ',', sep: ':' }
-  }
-  
-  return Object.keys(obj)
-    .map(key => `${key}${opts.sep}${obj[key]}`)
-    .join(opts.join)
-}
 
 const query_builder = (dirty_query={}) => {
   const base_query = {
