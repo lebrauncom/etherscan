@@ -12,8 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^0.19.2",
-    "dotenv": "^8.2.0",
-    "numbro": "^2.3.1"
+    "dotenv": "^8.2.0"
   },
   "devDependencies": {
     "jest": "^26.1.0"

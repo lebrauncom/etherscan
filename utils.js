@@ -1,5 +1,3 @@
-const numbro = require('numbro')
-
 const object_keys_values_to_string = (obj, opts={}) => {
   if (Object.entries(opts).length === 0) {
     opts = { join: ',', sep: ':' }
@@ -11,10 +9,8 @@ const object_keys_values_to_string = (obj, opts={}) => {
 }
 
 // format ethereum balance from integer to decimal
-const to_pretty_balance = (val) => {
-  return numbro(val)
-    .divide(1000000000000000000)
-    .format({ thousandSeparated: true, mantissa: 18 })
+const to_pretty_balance = (int_val) => {
+  return `${int_val.substring(0, 1)}.${int_val.substring(1)}`
 }
 
 module.exports = {
